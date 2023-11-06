@@ -9,15 +9,15 @@ const auth = (req, res, next) => {
             const user = jwt.verify(token, process.env.SECRET_KEY)
             req.userId = user.id
         }
+        
         else{
             return res.status(401).json({"message": "Unthorized User"})
         }
 
         next();
-    }catch(error){
+    } catch(error){
         res.status(401).json({"message": "Unauthorized User"})
     }
-
 }
 
 module.exports = auth

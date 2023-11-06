@@ -4,16 +4,25 @@ const moongoose = require("mongoose");
 const userRoute = require("./routes/user_route");
 const cors = require("cors");
 const activityRoute = require("./routes/activity_route");
+const dotenv= require("dotenv");
+
+dotenv.config();
 
 app.use(express.json())
 app.use(cors())
 app.use("/user", userRoute)
 app.use("/activity", activityRoute)
 
-moongoose.connect("mongodb+srv://sidrali:s5RX92afyvKe0buO@cluster0.r4p1dav.mongodb.net/?retryWrites=true&w=majority").then(() => {
-    app.listen(5001, ()=> {
-        console.log("Server listening on port 5000")
+app.get("/", (req,res) => {
+    res.status(200).json("Running")
+});
+
+const PORT = process.env.PORT || 5001
+moongoose.connect(process.env.MONGO_URL).then(() => {
+    app.listen(PORT, ()=> {
+        console.log("Server listening on port " + PORT)
     });
+    
 }).catch((error)=> {
     console.log(error)
 })
